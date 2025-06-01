@@ -1,4 +1,4 @@
-package sv.edu.udb;
+package sv.edu.udb.colonias;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
