@@ -1,6 +1,5 @@
 -- Tabla de colonias
-DROP TABLE IF EXISTS colonias CASCADE;
-CREATE TABLE colonias (
+CREATE TABLE IF NOT EXISTS colonias (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     coordenada_x DOUBLE,
@@ -10,7 +9,8 @@ CREATE TABLE colonias (
     recursos_naturales TEXT,
     tecnologia VARCHAR(255),
     alianzas_politicas TEXT,
-    activa BOOLEAN DEFAULT true
+    activa BOOLEAN DEFAULT true,
+    raza_id BIGINT
 );
 
 -- Tabla de rutas comerciales

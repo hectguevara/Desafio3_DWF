@@ -36,21 +36,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
         http
             .cors().and()
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**"),
-                                       AntPathRequestMatcher.antMatcher("/api/h2-console/**"))
-                .disable())
-            .headers(headers -> headers
-                .frameOptions()
-                .sameOrigin())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**"),
-                               AntPathRequestMatcher.antMatcher("/api/h2-console/**")).permitAll()
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/auth/login")).permitAll()
-                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/v1/colonias/**")).hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
-                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/v1/colonia")).hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
-                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PUT, "/api/v1/colonia/**")).hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
-                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.DELETE, "/api/v1/colonia/**")).hasRole("ASTRAADMIN")
+            .csrf().disable()
+            .headers().frameOptions().disable().and()
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/api/h2-console/**").permitAll()
+                .requestMatchers("/api/v1/auth/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/colonias/**").hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/colonia").hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/colonia/**").hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/colonia/**").hasRole("ASTRAADMIN")
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
@@ -93,7 +88,13 @@ public class SecurityConfig {
             .roles("ASTRAADMIN")
             .build();
 
-        return new InMemoryUserDetailsManager(astraDocumenter, astraAdmin);
+        UserDetails serviceUser = User.builder()
+            .username("ServiceUser")
+            .password(passwordEncoder().encode("unused"))
+            .roles("ASTRAADMIN")
+            .build();
+
+        return new InMemoryUserDetailsManager(astraDocumenter, astraAdmin, serviceUser);
     }
 
     @Bean

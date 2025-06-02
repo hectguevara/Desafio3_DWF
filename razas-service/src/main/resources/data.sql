@@ -1,17 +1,18 @@
 -- Inserciones de razas en la Federación Nebulon
-INSERT INTO razas (id, nombre, descripcion, nivel_tecnologico, poblacion_total, planeta_origen) 
+INSERT INTO razas (nombre, planeta_origen, nivel_tecnologico, poblacion_total, descripcion) 
 VALUES 
-(1, 'Humanos', 'Especie dominante en la Federación Nebulon, originaria de la Tierra. Conocidos por su adaptabilidad y avances tecnológicos.', 95, 15000000000, 'Tierra'),
-(2, 'Xendridianos', 'Raza antigua de comerciantes espaciales, expertos en navegación interestelar y diplomacia comercial.', 92, 8000000000, 'Xendrix Prime'),
-(3, 'Krolosianos', 'Especie guerrera pero honorable, destacados en ingeniería y construcción de naves espaciales.', 88, 5000000000, 'Krolos'),
-(4, 'Mindarianos', 'Seres telepáticos especializados en tecnología de comunicaciones y procesamiento de datos.', 97, 3000000000, 'Mindara'),
-(5, 'Aquarianos', 'Raza anfibia experta en biotecnología y medicina avanzada.', 91, 4000000000, 'Aquarius IV');
+('Vulcanos', 'Vulcano', 9, 10000000, 'Raza alienígena altamente lógica y tecnológicamente avanzada'),
+('Xendridianos', 'Xendrix Prime', 92, 800000000, 'Raza antigua de comerciantes espaciales, expertos en navegación interestelar y diplomacia comercial'),
+('Krolosianos', 'Krolos', 88, 500000000, 'Especie guerrera pero honorable, destacados en ingeniería y construcción de naves espaciales'),
+('Mindarianos', 'Mindara', 97, 300000000, 'Seres telepáticos especializados en tecnología de comunicaciones y procesamiento de datos'),
+('Aquarianos', 'Aquarius IV', 91, 400000000, 'Raza anfibia experta en biotecnología y medicina avanzada'),
+('Humanos', 'Tierra', 95, 1500000000, 'Especie dominante en la Federación Nebulón, originaria de la Tierra. Conocidos por su adaptabilidad y avances tecnológicos');
 
 -- Tabla de especialidades comerciales por raza
-INSERT INTO especialidades_comerciales (id, raza_id, especialidad, nivel_expertise)
+INSERT INTO especialidades_comerciales (raza_id, especialidad, nivel_expertise)
 VALUES 
-(1, 1, 'Tecnología de IA', 95),
-(2, 2, 'Comercio Interestelar', 98),
-(3, 3, 'Ingeniería Espacial', 94),
-(4, 4, 'Tecnología de Comunicaciones', 96),
-(5, 5, 'Biotecnología', 97); 
+(1, 'Tecnología de IA', 95),
+(2, 'Comercio Interestelar', 98),
+(3, 'Ingeniería Espacial', 94),
+(4, 'Tecnología de Comunicaciones', 96),
+(5, 'Biotecnología', 97); 

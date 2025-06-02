@@ -40,7 +40,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/razas/**").hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
+                .requestMatchers("/api/v1/razas/notify/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/razas/**", "/api/v1/raza/**").hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/v1/raza").hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/raza/**").hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/raza/**").hasRole("ASTRAADMIN")
@@ -87,7 +88,13 @@ public class SecurityConfig {
             .roles("ASTRAADMIN")
             .build();
 
-        return new InMemoryUserDetailsManager(astraDocumenter, astraAdmin);
+        UserDetails serviceUser = User.builder()
+            .username("ServiceUser")
+            .password(passwordEncoder().encode("unused"))
+            .roles("ASTRAADMIN")
+            .build();
+
+        return new InMemoryUserDetailsManager(astraDocumenter, astraAdmin, serviceUser);
     }
 
     @Bean

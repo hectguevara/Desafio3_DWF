@@ -1,6 +1,6 @@
 -- Tabla de razas
 CREATE TABLE IF NOT EXISTS razas (
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT NOT NULL,
     nivel_tecnologico INTEGER NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS razas (
 
 -- Tabla de especialidades comerciales
 CREATE TABLE IF NOT EXISTS especialidades_comerciales (
-    id BIGINT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     raza_id BIGINT NOT NULL,
     especialidad VARCHAR(100) NOT NULL,
     nivel_expertise INTEGER NOT NULL,

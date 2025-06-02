@@ -41,4 +41,7 @@ public class Colony {
     
     @Column(name = "activa")
     private Boolean activa = true;
+
+    @Column(name = "raza_id")
+    private Long razaId;
 } 
