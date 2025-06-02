@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -36,25 +35,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
         http
             .cors().and()
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**"),
-                                       AntPathRequestMatcher.antMatcher("/api/h2-console/**"))
-                .disable())
-            .headers(headers -> headers
-                .frameOptions()
-                .sameOrigin())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**"),
-                               AntPathRequestMatcher.antMatcher("/api/h2-console/**")).permitAll()
-                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/auth/login")).permitAll()
-                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/v1/colonias/**")).hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
-                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/v1/colonia")).hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
-                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PUT, "/api/v1/colonia/**")).hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
-                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.DELETE, "/api/v1/colonia/**")).hasRole("ASTRAADMIN")
+            .csrf().disable()
+            .headers().frameOptions().disable().and()
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/razas/**").hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/raza").hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/raza/**").hasAnyRole("ASTRADOCUMENTER", "ASTRAADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/raza/**").hasRole("ASTRAADMIN")
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         
