@@ -11,7 +11,7 @@ import sv.edu.udb.colonias.repository.RazaRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/v1/razas")
 @CrossOrigin(origins = "*")
 public class RazaController {
 
@@ -20,30 +20,36 @@ public class RazaController {
     @Autowired
     private RazaRepository razaRepository;
 
-    @GetMapping("/razas")
+    @GetMapping
     public ResponseEntity<List<Raza>> listarRazas() {
-        logger.debug("Recibida solicitud para listar todas las razas");
-        return ResponseEntity.ok(razaRepository.findAll());
+        logger.info("GET /v1/razas - Listando todas las razas");
+        List<Raza> razas = razaRepository.findAll();
+        return ResponseEntity.ok(razas);
     }
 
-    @GetMapping("/raza/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Raza> obtenerRazaPorId(@PathVariable Long id) {
-        logger.debug("Recibida solicitud para obtener raza con ID: {}", id);
+        logger.info("GET /v1/razas/{} - Buscando raza por ID", id);
         return razaRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/raza")
+    @PostMapping
     public ResponseEntity<Raza> crearRaza(@RequestBody Raza raza) {
-        logger.debug("Recibida solicitud para crear nueva raza: {}", raza);
-        Raza nueva = razaRepository.save(raza);
-        return ResponseEntity.ok(nueva);
+        logger.info("POST /v1/razas - Creando nueva raza: {}", raza);
+        try {
+            Raza nueva = razaRepository.save(raza);
+            return ResponseEntity.ok(nueva);
+        } catch (Exception e) {
+            logger.error("Error al crear raza: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
-    @PutMapping("/raza/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Raza> actualizarRaza(@PathVariable Long id, @RequestBody Raza nuevaRaza) {
-        logger.debug("Recibida solicitud para actualizar raza con ID: {}", id);
+        logger.info("PUT /v1/razas/{} - Actualizando raza", id);
         return razaRepository.findById(id)
                 .map(raza -> {
                     raza.setNombre(nuevaRaza.getNombre());
@@ -57,9 +63,9 @@ public class RazaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/raza/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarRaza(@PathVariable Long id) {
-        logger.debug("Recibida solicitud para eliminar raza con ID: {}", id);
+        logger.info("DELETE /v1/razas/{} - Eliminando raza", id);
         if (razaRepository.existsById(id)) {
             razaRepository.deleteById(id);
             return ResponseEntity.noContent().build();
