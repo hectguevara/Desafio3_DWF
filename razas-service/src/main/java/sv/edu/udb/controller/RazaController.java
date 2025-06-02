@@ -54,10 +54,9 @@ public class RazaController {
                 .map(raza -> {
                     raza.setNombre(nuevaRaza.getNombre());
                     raza.setDescripcion(nuevaRaza.getDescripcion());
-                    raza.setTecnologiasAvanzadas(nuevaRaza.getTecnologiasAvanzadas());
-                    raza.setAliados(nuevaRaza.getAliados());
-                    raza.setEnemigos(nuevaRaza.getEnemigos());
-                    raza.setDatosPoliticos(nuevaRaza.getDatosPoliticos());
+                    raza.setNivelTecnologico(nuevaRaza.getNivelTecnologico());
+                    raza.setPoblacionTotal(nuevaRaza.getPoblacionTotal());
+                    raza.setPlanetaOrigen(nuevaRaza.getPlanetaOrigen());
                     return ResponseEntity.ok(razaRepository.save(raza));
                 })
                 .orElse(ResponseEntity.notFound().build());

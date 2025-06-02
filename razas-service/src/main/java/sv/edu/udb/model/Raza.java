@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "razas")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,10 +15,18 @@ public class Raza {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "nombre", nullable = false)
     private String nombre;
+
+    @Column(name = "descripcion", nullable = false)
     private String descripcion;
-    private String tecnologiasAvanzadas;
-    private String aliados;
-    private String enemigos;
-    private String datosPoliticos;
+
+    @Column(name = "nivel_tecnologico", nullable = false)
+    private Integer nivelTecnologico;
+
+    @Column(name = "poblacion_total", nullable = false)
+    private Long poblacionTotal;
+
+    @Column(name = "planeta_origen", nullable = false)
+    private String planetaOrigen;
 } 
